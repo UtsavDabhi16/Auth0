@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class HomeController {
 
     @GetMapping(value = "/")
     @ResponseBody
     public String home(HttpServletRequest request, HttpServletResponse response, final Authentication authentication) throws IOException {
-
+        System.out.println("Authentication obj is :"+authentication);
         if (authentication!= null && authentication instanceof TestingAuthenticationToken) {
             TestingAuthenticationToken token = (TestingAuthenticationToken) authentication;
-
+            System.out.println("Token is "+ token);
             DecodedJWT jwt = JWT.decode(token.getCredentials().toString());
             String email = jwt.getClaims().get("email").asString();
 
@@ -29,5 +30,15 @@ public class HomeController {
             response.sendRedirect("http://localhost:8080/login");
             return null;
         }
+    }
+
+    @GetMapping("/demo")
+    public String helloworld(){
+        return "Hello world";
+    }
+
+    @GetMapping("/register")
+    public String SignUp(){
+        return "I am in SignUp Method.";
     }
 }

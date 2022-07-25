@@ -26,6 +26,17 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Value(value = "${com.auth0.clientSecret}")
     private String clientSecret;
 
+
+    @Value(value = "${com.auth0.managementApi.clientId}")
+    private String managementApiClientId;
+
+    @Value(value = "${com.auth0.managementApi.clientSecret}")
+    private String managementApiClientSecret;
+
+    @Value(value = "${com.auth0.managementApi.grantType}")
+    private String grantType;
+
+
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
         return new LogoutController();
@@ -52,7 +63,6 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessHandler(logoutSuccessHandler()).permitAll();
     }
-
     public String getDomain() {
         return domain;
     }
@@ -65,6 +75,17 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         return clientSecret;
     }
 
+    public String getManagementApiClientId() {
+        return managementApiClientId;
+    }
+
+    public String getManagementApiClientSecret() {
+        return managementApiClientSecret;
+    }
+
+    public String getGrantType() {
+        return grantType;
+    }
 
     public String getUserInfoUrl() {
         return "https://" + getDomain() + "/userinfo";
@@ -84,6 +105,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     public String getContextPath(HttpServletRequest request) {
         String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        System.out.println("Server name and port is :"+request.getServerPort() + request.getServerName());
         return path;
     }
 }
